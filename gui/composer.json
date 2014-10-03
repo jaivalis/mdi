@@ -9,7 +9,8 @@
 
 		"anahkiasen/former": "3.5.*",
 		"barryvdh/laravel-ide-helper": "1.*",
-		"laracasts/commander": "1.4.*",
+		"laracasts/commander": "1.3.*",
+		"laracasts/flash": "1.*",
 		"robclancy/presenter": "1.3.*"
 	},
 	"require-dev": {
@@ -37,6 +38,7 @@
 		],
 		"post-update-cmd": [
 			"php artisan clear-compiled",
+			"php artisan ide-helper:generate",
 			"php artisan optimize"
 		],
 		"post-create-project-cmd": [
