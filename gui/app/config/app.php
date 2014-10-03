@@ -122,6 +122,13 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
+		// Third Party
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+		'Former\FormerServiceProvider',
+		'Laracasts\Commander\CommanderServiceProvider',
+		'Laracasts\Flash\FlashServiceProvider',
+		'Robbo\Presenter\PresenterServiceProvider',
+
 	),
 
 	/*
