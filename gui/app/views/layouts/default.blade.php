@@ -21,7 +21,7 @@
             <div class="contain-to-grid">
                 <div class="row">
                     <div class="large-12 column">
-                        <nav class="top-bar" data-topbar>
+                        <nav class="top-bar" data-topbar role="navigation">
                             <ul class="title-area">
                                 <li class="name">
                                     <h1>
@@ -36,8 +36,8 @@
 
                             <section class="top-bar-section">
                                 <ul class="right">
-                                    <li>Login</li>
-                                    <li>Signup</li>
+                                    <li><a href="#">Login</a></li>
+                                    <li><a href="#">Signup</a></li>
                                 </ul>
                             </section>
                         </nav>
