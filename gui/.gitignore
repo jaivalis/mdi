@@ -6,3 +6,16 @@ composer.lock
 .env.php
 .DS_Store
 Thumbs.db
+
+# Project files
+.sass-cache
+.idea
+*.sublime*
+node_modules
+_ide_helper.php
+npm-debug.log
+
+# Directories
+public/components
+tests/_output/*
+public/components
