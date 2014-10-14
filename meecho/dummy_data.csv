@@ -1,5 +1,5 @@
-url, time_place, views, subscribers
+url, time_placed, views, subscribers, userID
 
-https://www.youtube.com/watch?v=pN5vf23UcO4, Sat 11 Oct 2014 21:46:04, 919473, 466
-https://www.youtube.com/watch?v=uOyAt2IabWE, Sat 11 Oct 2014 21:48:04, 188413, 13891
-https://www.youtube.com/watch?v=tnu_O5P8P5I, Sat 11 Oct 2014 21:49:04, 2779, 205864
+https://www.youtube.com/watch?v=pN5vf23UcO4, Sat 11 Oct 2014 21:46:04, 919473, 466, 1
+https://www.youtube.com/watch?v=uOyAt2IabWE, Sat 11 Oct 2014 21:48:04, 188413, 13891, 2
+https://www.youtube.com/watch?v=tnu_O5P8P5I, Sat 11 Oct 2014 21:49:04, 2779, 205864, 3
