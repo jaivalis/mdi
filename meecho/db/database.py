@@ -1,13 +1,18 @@
 import MySQLdb
 
 DB_HOST = 'localhost'
-DB_USERNAME = ''
-DB_PWD = ''
-DB_NAME = ''
+DB_USERNAME = 'root'
+DB_PWD = 'fifty50'
+DB_NAME = 'mdi'
 
 
 class DB:
     conn = None
+    insert_bet = ("INSERT INTO bets "
+                  "(id, user_id, video_id, current_views_count, current_subscribers_count, created_at, updated_at) "
+                  "VALUES "
+                  "(NULL, %(user_id)s, %(video_id)s, %(current_views_count)s, "
+                  "%(current_subscribers_count)s, %(created_at)s, %(created_at)s)")
 
     def __init__(self):
         self._connect()
@@ -43,10 +48,26 @@ class DB:
         except (AttributeError, MySQLdb.OperationalError), e:
             raise e
 
-    def get_cursor(self, api_name):
-        """
-        Return a cursor to the table containing the entries of a given api.
-        :param api_name: Name of api's table requested
+    def get_bets_cursor(self):
+        """ Return a cursor to the `bets` table.
         :return: mysql cursor
         """
         return None
+
+    def insert_bets(self, bets):
+        """ INSERTS to the bets table
+        :param bets: tuple containing the bets
+        """
+        cursor = self.conn.cursor()
+        for bet in bets:
+            cursor.execute(DB.insert_bet, bet)
+            pass
+        self.conn.commit()
+        cursor.close()
+
+
+def main():
+    db = DB()
+
+if __name__ == '__main__':
+    main()

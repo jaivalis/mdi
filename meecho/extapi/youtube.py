@@ -1,6 +1,8 @@
 from apiclient.discovery import build
 import httplib2
 import json
+from datetime import datetime
+from ..db.orm import Video
 
 
 class YoutubeApi:  # TODO extends API_abstract
@@ -20,12 +22,27 @@ class YoutubeApi:  # TODO extends API_abstract
         """
         resp, content = httplib2.Http().request(url)
         if resp['status'] != '200':  # quota limit reached
-            raise httplib2.HttpLib2ErrorWithResponse
-
+            print 'Oops returned STATUS:', resp['status']
         return json.loads(content)
 
-    def get_channel_id(self, vid_id):
-        return vid_id
+    def get_video(self, vid_id):
+        if '\/' in vid_id:
+            vid_id = vid_id.split('\/')[-1]
+        url = 'http://gdata.youtube.com/feeds/api/videos/{}?v=2&alt=jsonc'.format(vid_id)
+        obj = None
+        try:
+            obj = self._get_json_response(url)
+        except httplib2.HttpLib2ErrorWithResponse:
+            print 'Http exception'
+
+        videos_id = str(obj['data']['id'])
+        channel_id = str(obj['data']['uploader'])
+        view_count = int(obj['data']['viewCount'])
+        favorite_count = int(obj['data']['favoriteCount'])
+        published_at = datetime.strptime(str(obj['data']['uploaded']), '%Y-%m-%dT%H:%M:%S.%fZ')
+        created_at = datetime.now()
+
+        return Video(None, channel_id, videos_id, view_count, favorite_count, published_at, created_at)
 
     def get_channel_subscription_count(self, channel_id):
         url = 'http://gdata.youtube.com/feeds/api/users/{0}?alt=json'.format(channel_id)
@@ -37,9 +54,10 @@ class YoutubeApi:  # TODO extends API_abstract
 
         return int(obj['entry']['yt$statistics']['subscriberCount'])
 
-    def get_view_count(self, vid_id, channel_id=None):
+    def get_view_count_favorite_count(self, vid_id, channel_id=None):
         if channel_id is None:  # refer to this: https://code.google.com/p/gdata-issues/issues/detail?id=1745
             channel_id = self.get_channel_id(vid_id)
+        print '===', channel_id, vid_id
         url = "http://gdata.youtube.com/feeds/api/users/{0}/uploads/{1}?alt=json".format(channel_id, vid_id)
 
         obj = None
@@ -48,11 +66,12 @@ class YoutubeApi:  # TODO extends API_abstract
         except httplib2.HttpLib2ErrorWithResponse:
             print 'Http exception'
 
-        return int(obj['entry']['yt$statistics']['viewCount'])
+        return int(obj['entry']['yt$statistics']['viewCount']), int(obj['entry']['yt$statistics']['favoriteCount'])
+
+    def get_published_at(self):
+        return -1
 
     def __init__(self, key):
-        # authenticate
-
         # This OAuth 2.0 access scope allows for full read/write access to the
         # authenticated user's account.
         self.yt = build(self.YOUTUBE_API_SERVICE_NAME,
@@ -63,14 +82,21 @@ class YoutubeApi:  # TODO extends API_abstract
         # self.service = build("plus", "v1", http=http)
         # self.service.activities().list(userId="me")
 
-        c = self.get_view_count('0pqzNJYzh7I', 'citizentube')
-        s = self.get_channel_subscription_count('Tollywood')
-        print c
-        print s
+        # print self.get_view_count('0pqzNJYzh7I', 'citizentube')
+        # print self.get_channel_subscription_count('Tollywood')
 
         # search_response = self.youtube.search().list(
         #     q=options.q,
         #     part="id,snippet",
         #     maxResults=options.max_results
         # ).execute()
+
+
+def main():
+    yt = YoutubeApi('IzaSyAkeqT270l7-YSWmDVscxo-A5POFmbb9ZU')
+    v = yt.get_video('')
+    print v
+
+if __name__ == '__main__':
+    main()
 

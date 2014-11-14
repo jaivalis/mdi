@@ -1,5 +1,5 @@
 from extapi.youtube import YoutubeApi
-from util.globals import _youtube_API_key
+from
 
 
 def main():
